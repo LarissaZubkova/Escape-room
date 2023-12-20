@@ -1,5 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+import { store } from './store';
+import 'react-toastify/dist/ReactToastify.css';
+import browserHistory from './browser-history';
+import App from './components/app/app';
+import HistoryRouter from './components/history-route/history-route';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -7,6 +14,11 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <h1>Hello, World!</h1>
+    <Provider store = {store}>
+      <HistoryRouter history={browserHistory}>
+        <ToastContainer />
+        <App />
+      </HistoryRouter>
+    </Provider>
   </React.StrictMode>
 );
