@@ -2,10 +2,9 @@ import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getAuthorizationStatus, getErrorStatus, getLoadingStatus, getSuccessStatus } from '../../store/user-process/user-process.selectors';
+import { getErrorStatus, getLoadingStatus } from '../../store/user-process/user-process.selectors';
 import { FormEvent, useState, ChangeEvent } from 'react';
-import { AppRoute, AuthorizationStatus } from '../../consts';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { validateEmail, validatePassword, validateAgreement } from '../../utils/utils';
 import { AuthData } from '../../types/auth-data';
 import { loginAction } from '../../store/api-actions';
@@ -13,9 +12,7 @@ import { loginAction } from '../../store/api-actions';
 function LoginScreen(): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const hasError = useAppSelector(getErrorStatus);
-  const isSuccess = useAppSelector(getSuccessStatus);
   const isLoading = useAppSelector(getLoadingStatus);
 
   const [isValid, setIsValid] = useState({
@@ -23,10 +20,6 @@ function LoginScreen(): JSX.Element {
     email: true,
     agreement: true,
   });
-
-  if (authorizationStatus === AuthorizationStatus.Auth) {
-    return <Navigate to={AppRoute.Main} />;
-  }
 
   const handleFormChange = (evt: ChangeEvent<HTMLInputElement>, valid: boolean) => {
     const {name} = evt.target;
@@ -39,17 +32,13 @@ function LoginScreen(): JSX.Element {
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    console.log(1);
     const form = evt.currentTarget;
     const formData = new FormData(form);
     const {email, password} = Object.fromEntries(formData) as AuthData;
+    const dataForm = {email, password} as AuthData;
 
     if (isValid.password && isValid.email && isValid.agreement) {
-      dispatch(loginAction({password, email}));
-    }
-
-    if (isSuccess) {
-      navigate(-1);
+      dispatch(loginAction({dataForm, navigate}));
     }
   };
 

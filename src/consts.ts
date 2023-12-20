@@ -14,7 +14,7 @@ export enum AppRoute {
 
 export enum APIRout {
   Login = 'login',
-  Logout = 'users/logout',
+  Logout = 'logout',
 }
 
 export enum AuthorizationStatus {

@@ -8,5 +8,4 @@ export type UserProcess = {
   authorizationStatus: AuthorizationStatus;
   hasError: boolean;
   isLoading: boolean;
-  isSuccess: boolean;
 }

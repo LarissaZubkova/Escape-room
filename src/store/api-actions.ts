@@ -4,6 +4,7 @@ import { APIRout } from '../consts';
 import { dropToken, saveToken } from '../services/token';
 import { AuthData, UserData } from '../types/auth-data';
 import { AppDispatch, State } from '../types/state';
+import { NavigateFunction } from 'react-router-dom';
 //import { redirectToRoute } from './action';
 
 export const checkAuthAction = createAsyncThunk<UserData, undefined, {
@@ -18,15 +19,16 @@ export const checkAuthAction = createAsyncThunk<UserData, undefined, {
   },
 );
 
-export const loginAction = createAsyncThunk<void, AuthData, {
+export const loginAction = createAsyncThunk<void, {dataForm: AuthData; navigate: NavigateFunction}, {
 dispatch: AppDispatch;
 state: State;
 extra: AxiosInstance;
 }>(
   'user/login',
-  async (login, {extra: api}) => {
-    const {data} = await api.post<UserData>(APIRout.Login, login);
+  async ({dataForm, navigate}, {extra: api}) => {
+    const {data} = await api.post<UserData>(APIRout.Login, dataForm);
     saveToken(data.token);
+    navigate(-1);
   },
 );
 
