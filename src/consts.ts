@@ -30,6 +30,18 @@ export enum NameSpace {
   // Favorites = 'FAVORITES',
 }
 
+export enum NavTab {
+  Quests = 'Квесты',
+  Contacts = 'Контакты',
+  MyQuests = 'Мои бронирования',
+}
+
+export enum NavParams {
+  Quests = '/',
+  Contacts = '/contacts',
+  MyQuests = '/my-quests',
+}
+
 export const PasswordLength = {
   MIN: 3,
   MAX: 15,

@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 import { Link } from 'react-router-dom';
 import { logoutAction } from '../../store/api-actions';
+import HeaderNav from '../header-nav/header-nav';
 
 type HeaderProps = {
   isMain?: boolean;
@@ -28,20 +29,7 @@ function Header({isMain, isLogin}: HeaderProps): JSX.Element {
               <use xlinkHref="#logo"></use>
             </svg>
           </Link> }
-        <nav className="main-nav header__main-nav">
-          <ul className="main-nav__list">
-            <li className="main-nav__item">
-              <Link className="link active" to={AppRoute.Main}>Квесты</Link>
-            </li>
-            <li className="main-nav__item">
-              <Link className="link" to={AppRoute.Contacts}>Контакты</Link>
-            </li>
-            {isAuth &&
-            <li className="main-nav__item">
-              <Link className="link" to={AppRoute.MyQuests}>Мои бронирования</Link>
-            </li>}
-          </ul>
-        </nav>
+        <HeaderNav isAuth={isAuth}/>
         <div className="header__side-nav">
           {isAuth && !isLogin &&
             <Link
