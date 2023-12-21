@@ -18,6 +18,8 @@ export enum APIRout {
   Login = 'login',
   Logout = 'logout',
   Quests = 'quest',
+  Quest = '/quest/:id',
+  Booking = '/quest/:id/booking',
 }
 
 export enum AuthorizationStatus {
@@ -29,8 +31,8 @@ export enum AuthorizationStatus {
 export enum NameSpace {
   User = 'USER',
   Quests = 'QUESTS',
-  // Filters = 'FILTERS',
-  // Favorites = 'FAVORITES',
+  Quest = 'QUEST',
+  Booking = 'BOOKING',
 }
 
 export enum NavTab {

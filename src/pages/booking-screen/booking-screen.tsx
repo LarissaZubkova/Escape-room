@@ -1,8 +1,35 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
+import LoadingScreen from '../loading-screen/loading-screen';
+import ErrorScreen from '../error-screen/error-screen';
+import { useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useEffect } from 'react';
+import { fetchBookingPlaceAction } from '../../store/api-actions';
+import { getBookingPlaces, getPlacesLoadingStatus, getPlacesErrorStatus } from '../../store/booking-process/booking-process.selectors';
 
 function BookingScreen(): JSX.Element {
+  const {id} = useParams();
+  const dispatch = useAppDispatch();
+  const bookingPlaces = useAppSelector(getBookingPlaces);
+  const isPlacesLoading = useAppSelector(getPlacesLoadingStatus);
+  const hasPlacesError = useAppSelector(getPlacesErrorStatus);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchBookingPlaceAction(id));
+    }
+  }, [id, dispatch]);
+
+  if (isPlacesLoading || !bookingPlaces) {
+    return <LoadingScreen/>;
+  }
+
+  if (hasPlacesError) {
+    return <ErrorScreen/>;
+  }
+
   return (
     <div className="wrapper">
       <Helmet>

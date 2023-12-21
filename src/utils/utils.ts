@@ -67,3 +67,13 @@ export const filterByLevel = {
   [QuestLevel.Hard]: (quests: QuestShortCard[]) => quests.filter((quest) => quest.level === QuestLevel.Hard),
   [QuestLevel.Medium]: (quests: QuestShortCard[]) => quests.filter((quest) => quest.level === QuestLevel.Medium),
 };
+
+export function getDescription(description: string): string {
+  if (description.length < 50) {
+    return description.padEnd(50);
+  }
+  if (description.length > 300) {
+    return description.slice(0,300);
+  }
+  return description;
+}

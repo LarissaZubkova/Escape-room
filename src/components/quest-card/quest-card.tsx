@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { QuestShortCard } from '../../types/quest';
 import { AppRoute, QuestLevelFilter } from '../../consts';
 import { getMinMaxPeople } from '../../utils/utils';
@@ -8,11 +8,12 @@ type QuestCardProps = {
 }
 
 function QuestCard({quest}: QuestCardProps): JSX.Element {
+  const navigate = useNavigate();
   const {title, previewImg, previewImgWebp, id, peopleMinMax, level} = quest;
 
   return (
     <div className="quest-card">
-      <div className="quest-card__img">
+      <div className="quest-card__img" onClick={()=> navigate(AppRoute.Quest.replace(':id', id))}>
         <picture>
           <source type="image/webp" srcSet={`${previewImgWebp}, ${previewImgWebp} 2x`}/>
           <img src={previewImg} srcSet={`${previewImg} 2x`} width={344} height={232} alt={title}/>

@@ -5,8 +5,32 @@ import { dropToken, saveToken } from '../services/token';
 import { AuthData, UserData } from '../types/auth-data';
 import { AppDispatch, State } from '../types/state';
 import { NavigateFunction } from 'react-router-dom';
-import { QuestShortCard } from '../types/quest';
+import { QuestShortCard, QuestFullCard, BookingPlace } from '../types/quest';
 //import { redirectToRoute } from './action';
+
+export const fetchQuestByIdAction = createAsyncThunk<QuestFullCard, string, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'fetchQuestCard',
+  async(id, {extra: api}) => {
+    const {data} = await api.get<QuestFullCard>(APIRout.Quest.replace(':id', id));
+    return data;
+  }
+);
+
+export const fetchBookingPlaceAction = createAsyncThunk<BookingPlace[], string, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'review/fetchReviews',
+  async(id, {extra: api}) => {
+    const {data} = await api.get<BookingPlace[]>(APIRout.Booking.replace(':id', id));
+    return data;
+  }
+);
 
 export const fetchQuestsAction = createAsyncThunk<QuestShortCard[], undefined, {
   dispatch: AppDispatch;
