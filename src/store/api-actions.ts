@@ -5,7 +5,20 @@ import { dropToken, saveToken } from '../services/token';
 import { AuthData, UserData } from '../types/auth-data';
 import { AppDispatch, State } from '../types/state';
 import { NavigateFunction } from 'react-router-dom';
+import { QuestShortCard } from '../types/quest';
 //import { redirectToRoute } from './action';
+
+export const fetchQuestsAction = createAsyncThunk<QuestShortCard[], undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'fetchQuests',
+  async(_arg, {extra: api}) => {
+    const {data} = await api.get<QuestShortCard[]>(APIRout.Quests);
+    return data;
+  }
+);
 
 export const checkAuthAction = createAsyncThunk<UserData, undefined, {
   dispatch: AppDispatch;

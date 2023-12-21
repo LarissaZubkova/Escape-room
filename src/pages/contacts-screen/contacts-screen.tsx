@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
+import { Contacts } from '../../consts';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
+import QuestsMap from '../../components/map/map';
 
 function ContactsScreen(): JSX.Element {
   return (
@@ -18,7 +20,7 @@ function ContactsScreen(): JSX.Element {
         </div>
         <div className="container">
           <div className="page-content__title-wrapper page-content__title-wrapper--underlined">
-            <p className="subtitle page-content__subtitle">квесты в&nbsp;Санкт-Петербурге</p>
+            <p className="subtitle page-content__subtitle">квесты в&nbsp;{`${Contacts.CITY}е`}</p>
             <h1 className="title title--size-m page-content__title">Контакты</h1>
           </div>
           <div className="contacts">
@@ -26,31 +28,27 @@ function ContactsScreen(): JSX.Element {
               <div className="contacts__item">
                 <dt className="contacts__dt">Адрес</dt>
                 <dd className="contacts__dd">
-                  <address className="contacts__address">Санкт-Петербург,<br/> Набережная реки Карповка, д 5П</address>
+                  <address className="contacts__address">{Contacts.CITY},<br/> {Contacts.ADDRESS}</address>
                 </dd>
               </div>
               <div className="contacts__item">
                 <dt className="contacts__dt">Режим работы</dt>
-                <dd className="contacts__dd">Ежедневно, с&nbsp;10:00 до&nbsp;22:00</dd>
+                <dd className="contacts__dd">Ежедневно, с&nbsp;{Contacts.WORKING_START} до&nbsp;{Contacts.WORKING_END}</dd>
               </div>
               <div className="contacts__item">
                 <dt className="contacts__dt">Телефон</dt>
                 <dd className="contacts__dd">
-                  <a className="link" href="tel:88003335599">8 (000) 111-11-11</a>
+                  <a className="link" href="tel:88003335599">{Contacts.TELEPHONE}</a>
                 </dd>
               </div>
               <div className="contacts__item">
                 <dt className="contacts__dt">E&ndash;mail</dt>
                 <dd className="contacts__dd">
-                  <a className="link" href="mailto:info@escape-room.ru">info@escape-room.ru</a>
+                  <a className="link" href="mailto:info@escape-room.ru">{Contacts.EMAIL}</a>
                 </dd>
               </div>
             </dl>
-            <div className="contacts__map">
-              <div className="map">
-                <div className="map__container"></div>
-              </div>
-            </div>
+            <QuestsMap/>
           </div>
         </div>
       </main>
