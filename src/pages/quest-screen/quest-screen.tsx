@@ -12,7 +12,7 @@ import { AppRoute, QuestLevelFilter, QuestTypeFilter } from '../../consts';
 import { getDescription, getMinMaxPeople } from '../../utils/utils';
 
 function QuestScreen(): JSX.Element {
-  const {questId} = useParams();
+  const questId = useParams().id;
   const dispatch = useAppDispatch();
   const quest = useAppSelector(getQuestCard);
   const isQuestLoading = useAppSelector(getQuestCardLoadingStatus);

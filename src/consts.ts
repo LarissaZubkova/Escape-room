@@ -2,6 +2,10 @@ export const AUTH_TOKEN_KEY_NAME = 'my-token';
 export const BACKEND_URL = 'https://grading.design.pages.academy/v1/escape-room/';
 export const REQUEST_TIMEOUT = 5000;
 export const AGREEMENT = 'on';
+export const MarkersUrl = {
+  URL_MARKER_DEFAULT: 'img/svg/pin-default.svg',
+  URL_MARKER_ACTIVE: 'img/svg/pin-active.svg',
+};
 const ALL_QUESTS = 'all-quests';
 const SCI_FI = 'sci-fi';
 
@@ -91,4 +95,7 @@ export const Contacts = {
   WORKING_END: '22:00',
   TELEPHONE: '8 (000) 111-11-11',
   EMAIL: 'info@escape-room.ru',
+  LAT: 59.968142,
+  LNG: 30.316425,
+  ZOOM: 15,
 };

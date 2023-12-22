@@ -8,11 +8,14 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useEffect } from 'react';
 import { fetchBookingPlaceAction } from '../../store/api-actions';
 import { getBookingPlaces, getPlacesLoadingStatus, getPlacesErrorStatus } from '../../store/booking-process/booking-process.selectors';
+import { getQuestCard } from '../../store/quest-process/quest-process.selectors';
+import BookingTimeForm from '../../components/booking-time-form/booking-time-form';
 
 function BookingScreen(): JSX.Element {
   const {id} = useParams();
   const dispatch = useAppDispatch();
   const bookingPlaces = useAppSelector(getBookingPlaces);
+  const quest = useAppSelector(getQuestCard);
   const isPlacesLoading = useAppSelector(getPlacesLoadingStatus);
   const hasPlacesError = useAppSelector(getPlacesErrorStatus);
 
@@ -22,13 +25,15 @@ function BookingScreen(): JSX.Element {
     }
   }, [id, dispatch]);
 
-  if (isPlacesLoading || !bookingPlaces) {
+  if (isPlacesLoading || !bookingPlaces || !quest) {
     return <LoadingScreen/>;
   }
 
   if (hasPlacesError) {
     return <ErrorScreen/>;
   }
+
+  const {previewImg, previewImgWebp, title} = quest;
 
   return (
     <div className="wrapper">
@@ -39,15 +44,15 @@ function BookingScreen(): JSX.Element {
       <main className="page-content decorated-page">
         <div className="decorated-page__decor" aria-hidden="true">
           <picture>
-            <source type="image/webp" srcSet="img/content/maniac/maniac-bg-size-m.webp, img/content/maniac/maniac-bg-size-m@2x.webp 2x"/>
-            <img src="img/content/maniac/maniac-bg-size-m.jpg" srcSet="img/content/maniac/maniac-bg-size-m@2x.jpg 2x" width="1366" height="1959" alt=""/>
+            <source type="image/webp" srcSet={`${previewImgWebp}, ${previewImgWebp} 2x`}/>
+            <img src={previewImg} srcSet={`${quest.previewImg} 2x`} width={1366} height={1959} alt={title}/>
           </picture>
         </div>
         <div className="container container--size-s">
           <div className="page-content__title-wrapper">
             <h1 className="subtitle subtitle--size-l page-content__subtitle">Бронирование квеста
             </h1>
-            <p className="title title--size-m title--uppercase page-content__title">Маньяк</p>
+            <p className="title title--size-m title--uppercase page-content__title">{title}</p>
           </div>
           <div className="page-content__item">
             <div className="booking-map">
@@ -62,44 +67,11 @@ function BookingScreen(): JSX.Element {
               <legend className="visually-hidden">Выбор даты и времени</legend>
               <fieldset className="booking-form__date-section">
                 <legend className="booking-form__date-title">Сегодня</legend>
-                <div className="booking-form__date-inner-wrapper">
-                  <label className="custom-radio booking-form__date">
-                    <input type="radio" id="today9h45m" name="date" required value="today9h45m"/>
-                    <span className="custom-radio__label">9:45</span>
-                  </label>
-                  <label className="custom-radio booking-form__date">
-                    <input type="radio" id="today15h00m" name="date" checked required value="today15h00m"/><span className="custom-radio__label">15:00</span>
-                  </label>
-                  <label className="custom-radio booking-form__date">
-                    <input type="radio" id="today17h30m" name="date" required value="today17h30m"/><span className="custom-radio__label">17:30</span>
-                  </label>
-                  <label className="custom-radio booking-form__date">
-                    <input type="radio" id="today19h30m" name="date" required value="today19h30m" disabled/><span className="custom-radio__label">19:30</span>
-                  </label>
-                  <label className="custom-radio booking-form__date">
-                    <input type="radio" id="today21h30m" name="date" required value="today21h30m"/><span className="custom-radio__label">21:30</span>
-                  </label>
-                </div>
+                <BookingTimeForm />
               </fieldset>
               <fieldset className="booking-form__date-section">
                 <legend className="booking-form__date-title">Завтра</legend>
-                <div className="booking-form__date-inner-wrapper">
-                  <label className="custom-radio booking-form__date">
-                    <input type="radio" id="tomorrow11h00m" name="date" required value="tomorrow11h00m"/><span className="custom-radio__label">11:00</span>
-                  </label>
-                  <label className="custom-radio booking-form__date">
-                    <input type="radio" id="tomorrow15h00m" name="date" required value="tomorrow15h00m" disabled/><span className="custom-radio__label">15:00</span>
-                  </label>
-                  <label className="custom-radio booking-form__date">
-                    <input type="radio" id="tomorrow17h30m" name="date" required value="tomorrow17h30m" disabled/><span className="custom-radio__label">17:30</span>
-                  </label>
-                  <label className="custom-radio booking-form__date">
-                    <input type="radio" id="tomorrow19h45m" name="date" required value="tomorrow19h45m"/><span className="custom-radio__label">19:45</span>
-                  </label>
-                  <label className="custom-radio booking-form__date">
-                    <input type="radio" id="tomorrow21h30m" name="date" required value="tomorrow21h30m"/><span className="custom-radio__label">21:30</span>
-                  </label>
-                </div>
+                <BookingTimeForm />
               </fieldset>
             </fieldset>
             <fieldset className="booking-form__section">

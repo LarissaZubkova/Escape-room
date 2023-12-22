@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { Contacts } from '../../consts';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
-import QuestsMap from '../../components/map/map';
+import ContactsMap from '../../components/contacts-map/contacts-map';
 
 function ContactsScreen(): JSX.Element {
   return (
@@ -48,7 +48,9 @@ function ContactsScreen(): JSX.Element {
                 </dd>
               </div>
             </dl>
-            <QuestsMap/>
+            <div className="contacts__map">
+              <ContactsMap/>
+            </div>
           </div>
         </div>
       </main>
