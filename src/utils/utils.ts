@@ -77,3 +77,10 @@ export function getDescription(description: string): string {
   }
   return description;
 }
+
+export function getFormDateTime(data: string) {
+  return {
+    date: data.slice(0, -5),
+    time: data.slice(-5),
+  };
+}

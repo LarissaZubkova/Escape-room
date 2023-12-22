@@ -48,9 +48,7 @@ function ContactsScreen(): JSX.Element {
                 </dd>
               </div>
             </dl>
-            <div className="contacts__map">
-              <ContactsMap/>
-            </div>
+            <ContactsMap/>
           </div>
         </div>
       </main>

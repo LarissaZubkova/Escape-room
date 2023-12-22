@@ -1,6 +1,7 @@
 import { store } from '../store/index';
 import { AuthorizationStatus } from '../consts';
-import { BookingPlace, QuestFullCard, QuestShortCard } from './quest';
+import { QuestFullCard, QuestShortCard } from './quest';
+import { BookingPlace, MyBookingCard } from './booking';
 
 export type AppDispatch = typeof store.dispatch;
 export type State = ReturnType<typeof store.getState>;
@@ -27,4 +28,11 @@ export type BookingProcess = {
   bookingPlaces: BookingPlace[];
   isPlacesLoading: boolean;
   hasPlacesError: boolean;
+  selectedPlace: BookingPlace | null;
+}
+
+export type MyQuestsProcess = {
+  myQuests: MyBookingCard[];
+  isMyQuestsLoading: boolean;
+  hasMyQuestsError: boolean;
 }

@@ -1,11 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { APIRout } from '../consts';
+import { APIRout, AppRoute } from '../consts';
 import { dropToken, saveToken } from '../services/token';
 import { AuthData, UserData } from '../types/auth-data';
 import { AppDispatch, State } from '../types/state';
 import { NavigateFunction } from 'react-router-dom';
-import { QuestShortCard, QuestFullCard, BookingPlace } from '../types/quest';
+import { QuestShortCard, QuestFullCard } from '../types/quest';
+import { BookingData, BookingPlace, MyBookingCard } from '../types/booking';
 //import { redirectToRoute } from './action';
 
 export const fetchQuestByIdAction = createAsyncThunk<QuestFullCard, string, {
@@ -40,6 +41,30 @@ export const fetchQuestsAction = createAsyncThunk<QuestShortCard[], undefined, {
   'fetchQuests',
   async(_arg, {extra: api}) => {
     const {data} = await api.get<QuestShortCard[]>(APIRout.Quests);
+    return data;
+  }
+);
+
+export const fetchSendBookingAction = createAsyncThunk<void, {currentData: BookingData; navigate: NavigateFunction}, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'booking/fetchSendBooking',
+  async({currentData, navigate}, {extra: api}) => {
+    await api.post<void>(APIRout.Booking.replace(':id', currentData.placeId), currentData);
+    navigate(AppRoute.MyQuests);
+  }
+);
+
+export const fetchMyQuestsAction = createAsyncThunk<MyBookingCard[], undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'booking/fetchMyQuests',
+  async(_arg, {extra: api}) => {
+    const {data} = await api.get<MyBookingCard[]>(APIRout.MyQuests);
     return data;
   }
 );

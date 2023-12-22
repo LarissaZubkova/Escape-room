@@ -24,6 +24,7 @@ export enum APIRout {
   Quests = 'quest',
   Quest = '/quest/:id',
   Booking = '/quest/:id/booking',
+  MyQuests = 'reservation',
 }
 
 export enum AuthorizationStatus {
@@ -37,6 +38,7 @@ export enum NameSpace {
   Quests = 'QUESTS',
   Quest = 'QUEST',
   Booking = 'BOOKING',
+  MyQuests = 'MY_QUESTS'
 }
 
 export enum NavTab {
@@ -97,5 +99,10 @@ export const Contacts = {
   EMAIL: 'info@escape-room.ru',
   LAT: 59.968142,
   LNG: 30.316425,
-  ZOOM: 15,
+  ZOOM: 10,
 };
+
+export enum BookingDay {
+  Today = 'today',
+  Tomorrow = 'tomorrow',
+}

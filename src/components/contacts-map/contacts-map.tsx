@@ -31,11 +31,13 @@ function ContactsMap():JSX.Element {
   }, [lat, lng, map]);
 
   return (
-    <div className="map">
-      <div
-        className="map__container"
-        ref={mapRef}
-      >
+    <div className="contacts__map">
+      <div className="map">
+        <div
+          className="map__container"
+          ref={mapRef}
+        >
+        </div>
       </div>
     </div>
   );

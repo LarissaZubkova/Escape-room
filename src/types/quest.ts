@@ -27,22 +27,3 @@ export type QuestFullCard = {
   coverImg: string;
   coverImgWebp: string;
 }
-
-type Location = {
-  address: string;
-  coords: number[];
-}
-
-type Slot = {
-  time: string;
-  isAvailable: boolean;
-}
-
-export type BookingPlace = {
-  id: string;
-  location: Location;
-  slots: {
-    today: Slot[];
-     tomorrow: Slot[];
-  };
-}
