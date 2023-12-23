@@ -3,15 +3,15 @@ import { getSelectedPlace } from '../../store/booking-process/booking-process.se
 //import { useForm } from 'react-hook-form';
 import { FormEvent } from 'react';
 import { getFormDateTime } from '../../utils/utils';
-import { CurrentFormData } from '../../types/booking';
-import { fetchSendBookingAction } from '../../store/api-actions';
+import { BookingData, CurrentFormData } from '../../types/booking';
+import { fetchSendBookingAction, fetchMyQuestsAction } from '../../store/api-actions';
 import { useNavigate } from 'react-router-dom';
 
 type BookingFormProps = {
-  placeId: string;
+  id: string;
 }
 
-function BookingForm({placeId}: BookingFormProps): JSX.Element {
+function BookingForm({id}: BookingFormProps): JSX.Element {
   //const { register, handleSubmit } = useForm();
   const selectedPlace = useAppSelector(getSelectedPlace);
   const dispatch = useAppDispatch();
@@ -30,12 +30,11 @@ function BookingForm({placeId}: BookingFormProps): JSX.Element {
       phone,
       withChildren: Boolean(children),
       peopleCount: Number(person),
-      placeId,
-    };
+      placeId: selectedPlace?.id,
+    } as BookingData;
 
-    dispatch(fetchSendBookingAction({currentData, navigate}));
+    dispatch(fetchSendBookingAction({currentData, id, navigate}));
     dispatch(fetchMyQuestsAction());
-    console.log(currentData);
   };
 
   return (

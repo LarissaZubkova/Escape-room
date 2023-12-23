@@ -1,4 +1,5 @@
-import { BookingDay, QuestLevel, QuestType } from '../consts';
+import { BookingDay } from '../consts';
+import { QuestShortCard } from './quest';
 
 type Location = {
   address: string;
@@ -46,13 +47,5 @@ export type MyBookingCard = {
   peopleCount: number;
   id: string;
   location: Location;
-  quest: {
-    id: string;
-    title: string;
-    previewImg: string;
-    previewImgWebp: string;
-    level: QuestLevel;
-    type: QuestType;
-    peopleMinMax: number[];
-  };
+  quest: QuestShortCard;
 }

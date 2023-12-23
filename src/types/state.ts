@@ -35,4 +35,6 @@ export type MyQuestsProcess = {
   myQuests: MyBookingCard[];
   isMyQuestsLoading: boolean;
   hasMyQuestsError: boolean;
+  hasDeleteMyQuestError: boolean;
+  isDeleting: boolean;
 }

@@ -1,8 +1,33 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getMyQuestsCard, getMyQuestsCardErrorStatus, getMyQuestsCardLoadingStatus } from '../../store/my-quests-process/my-quest-process.selectors';
+import LoadingScreen from '../loading-screen/loading-screen';
+import ErrorScreen from '../error-screen/error-screen';
+import QuestCard from '../../components/quest-card/quest-card';
+import CancelButton from '../../components/cancelButton/cancelBatton';
+import { fetchMyQuestsAction } from '../../store/api-actions';
+import { useEffect } from 'react';
 
 function MyQuestsScreen(): JSX.Element {
+  const myQuests = useAppSelector(getMyQuestsCard);
+  const isLoading = useAppSelector(getMyQuestsCardLoadingStatus);
+  const hasError = useAppSelector(getMyQuestsCardErrorStatus);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchMyQuestsAction());
+  },[dispatch]);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (hasError) {
+    return <ErrorScreen />;
+  }
+
   return (
     <div className="wrapper">
       <Helmet>
@@ -21,33 +46,7 @@ function MyQuestsScreen(): JSX.Element {
             <h1 className="title title--size-m page-content__title">Мои бронирования</h1>
           </div>
           <div className="cards-grid">
-            <div className="quest-card">
-              <div className="quest-card__img">
-                <picture>
-                  <source type="image/webp" srcSet="img/content/maniac/maniac-size-s.webp, img/content/maniac/maniac-size-s@2x.webp 2x"/>
-                  <img src="img/content/maniac/maniac-size-s.jpg" srcSet="img/content/maniac/maniac-size-s@2x.jpg 2x" width="344" height="232" alt="Мужчина в маске в тёмном переходе."/>
-                </picture>
-              </div>
-              <div className="quest-card__content">
-                <div className="quest-card__info-wrapper">
-                  <a className="quest-card__link" href="quest.html">Маньяк</a>
-                  <span className="quest-card__info">[сегодня,&nbsp;17:00. наб. реки Карповки&nbsp;5, лит&nbsp;П<br/>м. Петроградская]</span>
-                </div>
-                <ul className="tags quest-card__tags">
-                  <li className="tags__item">
-                    <svg width="11" height="14" aria-hidden="true">
-                      <use xlinkHref="#icon-person"></use>
-                    </svg>6&nbsp;чел
-                  </li>
-                  <li className="tags__item">
-                    <svg width="14" height="14" aria-hidden="true">
-                      <use xlinkHref="#icon-level"></use>
-                    </svg>Средний
-                  </li>
-                </ul>
-                <button className="btn btn--accent btn--secondary quest-card__btn" type="button">Отменить</button>
-              </div>
-            </div>
+            {myQuests.map((myQuest) => <QuestCard key={myQuest.id} quest={myQuest.quest} count={myQuest.peopleCount}>{<CancelButton id={myQuest.id} />}</QuestCard>)}
           </div>
         </div>
       </main>

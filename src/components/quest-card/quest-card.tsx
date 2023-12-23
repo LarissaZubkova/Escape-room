@@ -2,12 +2,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { QuestShortCard } from '../../types/quest';
 import { AppRoute, QuestLevelFilter } from '../../consts';
 import { getMinMaxPeople } from '../../utils/utils';
+import { ReactNode } from 'react';
 
 type QuestCardProps = {
   quest: QuestShortCard;
+  children?: ReactNode;
+  count?: number;
 }
 
-function QuestCard({quest}: QuestCardProps): JSX.Element {
+function QuestCard({quest, children, count}: QuestCardProps): JSX.Element {
   const navigate = useNavigate();
   const {title, previewImg, previewImgWebp, id, peopleMinMax, level} = quest;
 
@@ -27,7 +30,7 @@ function QuestCard({quest}: QuestCardProps): JSX.Element {
           <li className="tags__item">
             <svg width={11} height={14} aria-hidden="true">
               <use xlinkHref="#icon-person"></use>
-            </svg>{getMinMaxPeople(peopleMinMax)}чел
+            </svg>{count ? `${count} ` : getMinMaxPeople(peopleMinMax)}чел
           </li>
           <li className="tags__item">
             <svg width={14} height={14} aria-hidden="true">
@@ -35,6 +38,7 @@ function QuestCard({quest}: QuestCardProps): JSX.Element {
             </svg>{QuestLevelFilter[level]}
           </li>
         </ul>
+        {children}
       </div>
     </div>
   );

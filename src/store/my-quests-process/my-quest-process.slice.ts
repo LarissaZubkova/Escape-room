@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../consts';
 import { MyQuestsProcess } from '../../types/state';
-import { fetchMyQuestsAction } from '../api-actions';
+import { fetchMyQuestsAction, fetchDeleteMyQuestAction } from '../api-actions';
 
 const initialState: MyQuestsProcess = {
   myQuests: [],
   isMyQuestsLoading: false,
   hasMyQuestsError: false,
+  hasDeleteMyQuestError: false,
+  isDeleting: false,
 };
 
 export const myQuestProcess = createSlice({
@@ -24,9 +26,17 @@ export const myQuestProcess = createSlice({
         state.isMyQuestsLoading = false;
         state.hasMyQuestsError = false;
       })
-      .addCase(fetchMyQuestsAction.rejected, (state) => {
-        state.hasMyQuestsError = true;
-        state.isMyQuestsLoading = false;
+      .addCase(fetchDeleteMyQuestAction.pending, (state) => {
+        state.hasDeleteMyQuestError = false;
+        state.isDeleting = true;
+      })
+      .addCase(fetchDeleteMyQuestAction.fulfilled, (state) => {
+        state.hasDeleteMyQuestError = false;
+        state.isDeleting = false;
+      })
+      .addCase(fetchDeleteMyQuestAction.rejected, (state) => {
+        state.hasDeleteMyQuestError = true;
+        state.isDeleting = false;
       });
   }
 });

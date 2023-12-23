@@ -59,7 +59,7 @@ function BookingScreen(): JSX.Element {
           <div className="page-content__item">
             <BookingMap places={bookingPlaces}/>
           </div>
-          <BookingForm placeId={id}/>
+          <BookingForm id={id}/>
         </div>
       </main>
       <Footer/>
