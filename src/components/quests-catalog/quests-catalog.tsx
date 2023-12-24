@@ -15,6 +15,7 @@ function QuestsCatalog({selectedFilters}: QuestsCatalogProps): JSX.Element {
 
   return (
     <div className="cards-grid">
+      {currentQuests.length === 0 && <p>Нет квестов, выберите другие фильты</p>}
       {currentQuests.map((quest) => <QuestCard quest={quest} key={quest.id}/>)}
     </div>
   );

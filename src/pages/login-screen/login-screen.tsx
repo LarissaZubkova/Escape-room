@@ -4,9 +4,10 @@ import Footer from '../../components/footer/footer';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getErrorStatus, getLoadingStatus } from '../../store/user-process/user-process.selectors';
 import { FormEvent, useState, ChangeEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { validateEmail, validatePassword, validateAgreement } from '../../utils/utils';
 import { AuthData } from '../../types/auth-data';
+import { AppRoute } from '../../consts';
 import { loginAction } from '../../store/api-actions';
 
 function LoginScreen(): JSX.Element {
@@ -14,7 +15,8 @@ function LoginScreen(): JSX.Element {
   const navigate = useNavigate();
   const hasError = useAppSelector(getErrorStatus);
   const isLoading = useAppSelector(getLoadingStatus);
-
+  const location = useLocation();
+  const fromPage: string = location.state?.from?.pathname || AppRoute.Main;
   const [isValid, setIsValid] = useState({
     password: true,
     email: true,
@@ -38,7 +40,7 @@ function LoginScreen(): JSX.Element {
     const dataForm = {email, password} as AuthData;
 
     if (isValid.password && isValid.email && isValid.agreement) {
-      dispatch(loginAction({dataForm, navigate}));
+      dispatch(loginAction({dataForm, navigate, fromPage}));
     }
   };
 

@@ -37,7 +37,7 @@ function QuestScreen(): JSX.Element {
   return (
     <div className="wrapper">
       <Helmet>
-        <title>Квест - Escape Room</title>
+        <title>{`Квест - ${quest.title}`}</title>
       </Helmet>
       <Header />
       <main className="decorated-page quest-page">
@@ -54,7 +54,7 @@ function QuestScreen(): JSX.Element {
             </p>
             <ul className="tags tags--size-l quest-page__tags">
               <li className="tags__item">
-                <svg width="11" height="14" aria-hidden="true">
+                <svg width={11} height={14} aria-hidden="true">
                   <use xlinkHref="#icon-person"></use>
                 </svg>{getMinMaxPeople(peopleMinMax)}чел
               </li>

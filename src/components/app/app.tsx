@@ -1,7 +1,7 @@
 import { HelmetProvider } from 'react-helmet-async';
 import { Route, Routes } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { AppRoute, AuthorizationStatus } from '../../consts';
+import { AppRoute } from '../../consts';
 import { getAuthCheckedStatus, getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 import { useEffect } from 'react';
 import WelcomeScreen from '../../pages/welcome-screen/welcome-screen';

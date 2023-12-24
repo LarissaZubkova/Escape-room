@@ -4,7 +4,7 @@ import Footer from '../../components/footer/footer';
 import QuestsCatalog from '../../components/quests-catalog/quests-catalog';
 import FiltersForm from '../../components/filters-form/filters-form';
 import { useState } from 'react';
-import { QuestLevel, QuestType } from '../../consts';
+import { QuestLevel, QuestType,Contacts } from '../../consts';
 
 function WelcomeScreen(): JSX.Element {
   const [selectedFilters, setSelectedFilters] = useState({
@@ -21,7 +21,7 @@ function WelcomeScreen(): JSX.Element {
       <main className="page-content">
         <div className="container">
           <div className="page-content__title-wrapper">
-            <h1 className="subtitle page-content__subtitle">квесты в Санкт-Петербурге</h1>
+            <h1 className="subtitle page-content__subtitle">{`квесты в ${Contacts.CITY}е`}</h1>
             <h2 className="title title--size-m page-content__title">Выберите тематику</h2>
           </div>
           <div className="page-content__item">
