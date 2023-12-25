@@ -1,27 +1,42 @@
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import Header from '../../components/header/header';
-import Footer from '../../components/footer/footer';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getErrorStatus, getLoadingStatus } from '../../store/user-process/user-process.selectors';
-import { FormEvent, useState, ChangeEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { validateEmail, validatePassword, validateAgreement } from '../../utils/utils';
-import { AuthData } from '../../types/auth-data';
-import { AppRoute } from '../../consts';
+import { AppRoute, AuthorizationStatus } from '../../consts';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
+import { getAuthorizationStatus, getErrorStatus, getLoadingStatus } from '../../store/user-process/user-process.selectors';
+import { AuthData } from '../../types/auth-data';
+import { validateAgreement, validateEmail, validatePassword } from '../../utils/utils';
+import Footer from '../../components/footer/footer';
+import Header from '../../components/header/header';
+
+type Location = {
+  state: {
+    from: {
+      pathname: string;
+    };
+  };
+}
 
 function LoginScreen(): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const hasError = useAppSelector(getErrorStatus);
   const isLoading = useAppSelector(getLoadingStatus);
-  const location = useLocation();
-  const fromPage: string = location.state?.from?.pathname || AppRoute.Main;
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const location = useLocation() as Location;
+  const fromPage = location.state?.from.pathname || AppRoute.Main;
   const [isValid, setIsValid] = useState({
     password: true,
     email: true,
     agreement: true,
   });
+
+  useEffect (() => {
+    if (authorizationStatus === AuthorizationStatus.Auth){
+      navigate(fromPage);
+    }
+  }, [authorizationStatus, navigate, fromPage]);
 
   const handleFormChange = (evt: ChangeEvent<HTMLInputElement>, valid: boolean) => {
     const {name} = evt.target;
@@ -40,7 +55,7 @@ function LoginScreen(): JSX.Element {
     const dataForm = {email, password} as AuthData;
 
     if (isValid.password && isValid.email && isValid.agreement) {
-      dispatch(loginAction({dataForm, navigate, fromPage}));
+      dispatch(loginAction(dataForm));
     }
   };
 

@@ -1,15 +1,15 @@
-import { Helmet } from 'react-helmet-async';
-import Header from '../../components/header/header';
-import Footer from '../../components/footer/footer';
-import { Link, useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { Link, useParams } from 'react-router-dom';
+import { AppRoute, QuestLevelFilter, QuestTypeFilter } from '../../consts';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchQuestByIdAction } from '../../store/api-actions';
 import { getQuestCard, getQuestCardErrorStatus, getQuestCardLoadingStatus } from '../../store/quest-process/quest-process.selectors';
-import LoadingScreen from '../loading-screen/loading-screen';
-import ErrorScreen from '../error-screen/error-screen';
-import { AppRoute, QuestLevelFilter, QuestTypeFilter } from '../../consts';
 import { getDescription, getMinMaxPeople } from '../../utils/utils';
+import Footer from '../../components/footer/footer';
+import Header from '../../components/header/header';
+import ErrorScreen from '../error-screen/error-screen';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 function QuestScreen(): JSX.Element {
   const questId = useParams().id;

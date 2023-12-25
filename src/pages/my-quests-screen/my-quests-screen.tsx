@@ -1,14 +1,14 @@
-import { Helmet } from 'react-helmet-async';
-import Header from '../../components/header/header';
-import Footer from '../../components/footer/footer';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getMyQuestsCard, getMyQuestsCardErrorStatus, getMyQuestsCardLoadingStatus } from '../../store/my-quests-process/my-quest-process.selectors';
-import LoadingScreen from '../loading-screen/loading-screen';
-import ErrorScreen from '../error-screen/error-screen';
-import QuestCard from '../../components/quest-card/quest-card';
-import CancelButton from '../../components/cancelButton/cancelButton';
-import { fetchMyQuestsAction } from '../../store/api-actions';
 import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchMyQuestsAction } from '../../store/api-actions';
+import { getMyQuestsCard, getMyQuestsCardErrorStatus, getMyQuestsCardLoadingStatus } from '../../store/my-quests-process/my-quest-process.selectors';
+import CancelButton from '../../components/cancelButton/cancelButton';
+import Footer from '../../components/footer/footer';
+import Header from '../../components/header/header';
+import QuestCard from '../../components/quest-card/quest-card';
+import ErrorScreen from '../error-screen/error-screen';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 function MyQuestsScreen(): JSX.Element {
   const myQuests = useAppSelector(getMyQuestsCard);
@@ -46,7 +46,7 @@ function MyQuestsScreen(): JSX.Element {
             <h1 className="title title--size-m page-content__title">Мои бронирования</h1>
           </div>
           <div className="cards-grid">
-            {myQuests.map((myQuest) => <QuestCard key={myQuest.id} quest={myQuest.quest} count={myQuest.peopleCount}>{<CancelButton id={myQuest.id} />}</QuestCard>)}
+            {myQuests.map((myQuest) => <QuestCard key={myQuest.id} quest={myQuest.quest} myQuest={myQuest} >{<CancelButton id={myQuest.id} />}</QuestCard>)}
           </div>
         </div>
       </main>

@@ -1,10 +1,10 @@
-import { Helmet } from 'react-helmet-async';
-import Header from '../../components/header/header';
-import Footer from '../../components/footer/footer';
-import QuestsCatalog from '../../components/quests-catalog/quests-catalog';
-import FiltersForm from '../../components/filters-form/filters-form';
 import { useState } from 'react';
-import { QuestLevel, QuestType,Contacts } from '../../consts';
+import { Helmet } from 'react-helmet-async';
+import { Contacts, QuestLevel, QuestType } from '../../consts';
+import FiltersForm from '../../components/filters-form/filters-form';
+import Footer from '../../components/footer/footer';
+import Header from '../../components/header/header';
+import QuestsCatalog from '../../components/quests-catalog/quests-catalog';
 
 function WelcomeScreen(): JSX.Element {
   const [selectedFilters, setSelectedFilters] = useState({

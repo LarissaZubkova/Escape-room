@@ -1,27 +1,25 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getSelectedPlace } from '../../store/booking-process/booking-process.selectors';
-//import { useForm } from 'react-hook-form';
-import { FormEvent } from 'react';
-import { getFormDateTime } from '../../utils/utils';
+import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
+import { getFormDateTime, validateName, validatePhoneNumber } from '../../utils/utils';
 import { BookingData, CurrentFormData } from '../../types/booking';
 import { fetchSendBookingAction, fetchMyQuestsAction } from '../../store/api-actions';
 import { useNavigate } from 'react-router-dom';
+import FormErrorMessage from '../form-error-message/form-error-message';
 
 type BookingFormProps = {
   id: string;
+  peopleMinMax: number[];
 }
 
-function BookingForm({id}: BookingFormProps): JSX.Element {
-  //const { register, handleSubmit } = useForm();
+function BookingForm({id, peopleMinMax}: BookingFormProps): JSX.Element {
   const selectedPlace = useAppSelector(getSelectedPlace);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { register, handleSubmit, formState: {errors} } = useForm({mode: 'onChange'});
 
-  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    const form = evt.currentTarget;
-    const formData = new FormData(form);
-    const {children, date, contactPerson, person, phone} = Object.fromEntries(formData) as CurrentFormData;
+  const handleFormSubmit: SubmitHandler<FieldValues> = (data) => {
+    const {children, date, contactPerson, person, phone} = data as CurrentFormData;
 
     const currentData = {
       date: getFormDateTime(date).date,
@@ -42,16 +40,25 @@ function BookingForm({id}: BookingFormProps): JSX.Element {
       className="booking-form"
       action="https://echo.htmlacademy.ru/"
       method="post"
-      onSubmit={handleFormSubmit}
+      onSubmit={(evt) => {
+        handleSubmit(handleFormSubmit)(evt);
+      }}
     >
       <fieldset className="booking-form__section">
         <legend className="visually-hidden">Выбор даты и времени</legend>
+        {errors.date && <FormErrorMessage error={errors.date}/>}
         <fieldset className="booking-form__date-section">
           <legend className="booking-form__date-title">Сегодня</legend>
           <div className="booking-form__date-inner-wrapper">
             {selectedPlace && selectedPlace.slots.today.map((slot) => (
               <label className="custom-radio booking-form__date" key={slot.time}>
-                <input type="radio" id={`today${slot.time}`} name="date" required value={`today${slot.time}`} disabled={!slot.isAvailable}/>
+                <input type="radio"
+                  id={`today${slot.time}`}
+                  value={`today${slot.time}`}
+                  disabled={!slot.isAvailable}
+                  {...register('date',
+                    { required: 'Обязательное поле' })}
+                />
                 <span className="custom-radio__label">{slot.time}</span>
               </label>
             ))}
@@ -62,7 +69,15 @@ function BookingForm({id}: BookingFormProps): JSX.Element {
           <div className="booking-form__date-inner-wrapper">
             {selectedPlace && selectedPlace.slots.tomorrow.map((slot) => (
               <label className="custom-radio booking-form__date" key={slot.time}>
-                <input type="radio" id={`tomorrow${slot.time}`} name="date" required value={`tomorrow${slot.time}`} disabled={!slot.isAvailable}/>
+                <input
+                  type="radio"
+                  id={`tomorrow${slot.time}`}
+                  value={`tomorrow${slot.time}`}
+                  disabled={!slot.isAvailable}
+                  {...register('date', {
+                    required: 'Обязательное поле'
+                  })}
+                />
                 <span className="custom-radio__label">{slot.time}</span>
               </label>
             ))}
@@ -73,18 +88,59 @@ function BookingForm({id}: BookingFormProps): JSX.Element {
         <legend className="visually-hidden">Контактная информация</legend>
         <div className="custom-input booking-form__input">
           <label className="custom-input__label" htmlFor="name">Ваше имя</label>
-          <input type="text" id="name" name="contactPerson" placeholder="Имя" required pattern="[А-Яа-яЁёA-Za-z'- ]{1,}"/>
+          <input
+            type="text"
+            id="name"
+            placeholder="Имя"
+            {...register('contactPerson',
+              { required: 'Обязательное поле' ,
+                validate: {
+                  validateName,
+                },
+              }
+            )}
+          />
+          {errors.contactPerson && <FormErrorMessage error={errors.contactPerson}/>}
         </div>
         <div className="custom-input booking-form__input">
           <label className="custom-input__label" htmlFor="tel">Контактный телефон</label>
-          <input type="tel" id="tel" name="phone" placeholder="Телефон" required pattern="[0-9]{10,}"/>
+          <input
+            type="tel"
+            id="tel"
+            placeholder="Телефон"
+            {...register('phone',
+              { required: 'Обязательное поле',
+                validate: validatePhoneNumber
+              })}
+          />
+          {errors.phone && <FormErrorMessage error={errors.phone}/>}
         </div>
         <div className="custom-input booking-form__input">
           <label className="custom-input__label" htmlFor="person">Количество участников</label>
-          <input type="number" id="person" name="person" placeholder="Количество участников" required/>
+          <input
+            type="number"
+            id="person"
+            placeholder="Количество участников"
+            {...register('person',
+              { required: 'Обязательное поле',
+                min: {
+                  value: peopleMinMax[0],
+                  message: 'Меньше разрешенного числа участников'
+                },
+                max: {
+                  value: peopleMinMax[1],
+                  message: 'Больше разрешенного числа участников'
+                }
+              })}
+          />
+          {errors.person && <FormErrorMessage error={errors.person}/>}
         </div>
         <label className="custom-checkbox booking-form__checkbox booking-form__checkbox--children">
-          <input type="checkbox" id="children" name="children"/>
+          <input
+            type="checkbox"
+            id="children"
+            {...register('children')}
+          />
           <span className="custom-checkbox__icon">
             <svg width={20} height={17} aria-hidden="true">
               <use xlinkHref="#icon-tick"></use>
@@ -95,7 +151,13 @@ function BookingForm({id}: BookingFormProps): JSX.Element {
       </fieldset>
       <button className="btn btn--accent btn--cta booking-form__submit" type="submit">Забронировать</button>
       <label className="custom-checkbox booking-form__checkbox booking-form__checkbox--agreement">
-        <input type="checkbox" id="id-order-agreement" name="user-agreement" required/>
+        <input
+          type="checkbox"
+          id="id-order-agreement"
+          {...register('agreement',
+            { required: 'Обязательное поле' })}
+        />
+        {errors.agreement && <FormErrorMessage error={errors.agreement}/>}
         <span className="custom-checkbox__icon">
           <svg width={20} height={17} aria-hidden="true">
             <use xlinkHref="#icon-tick"></use>

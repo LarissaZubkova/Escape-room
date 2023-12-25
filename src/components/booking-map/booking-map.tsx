@@ -1,14 +1,14 @@
-import 'leaflet/dist/leaflet.css';
 import { Icon, Marker, layerGroup } from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { useEffect } from 'react';
-import useMap from '../../hooks/use-map';
 import { Contacts } from '../../consts';
-import { BookingPlace } from '../../types/quest';
-import iconDefault from './pin-default.svg';
-import iconActive from './pin-active.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getSelectedPlace } from '../../store/booking-process/booking-process.selectors';
 import { setSelectedPlace } from '../../store/booking-process/booking-process.slice';
+import { BookingPlace } from '../../types/booking';
+import useMap from '../../hooks/use-map';
+import iconActive from './pin-active.svg';
+import iconDefault from './pin-default.svg';
 
 const defaultPin = new Icon({
   iconUrl: iconDefault,
@@ -43,7 +43,6 @@ function BookingMap({places}: BookingMapProps):JSX.Element {
 
       const createMarker = (point: BookingPlace) => {
         const [lat, lng] = point.location.coords;
-
         const marker = new Marker({
           lat,
           lng

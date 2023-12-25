@@ -93,16 +93,15 @@ export const checkAuthAction = createAsyncThunk<UserData, undefined, {
   },
 );
 
-export const loginAction = createAsyncThunk<void, {dataForm: AuthData; navigate: NavigateFunction; fromPage: string}, {
+export const loginAction = createAsyncThunk<void, AuthData, {
 dispatch: AppDispatch;
 state: State;
 extra: AxiosInstance;
 }>(
   'user/login',
-  async ({dataForm, navigate, fromPage}, {extra: api}) => {
+  async (dataForm, {extra: api}) => {
     const {data} = await api.post<UserData>(APIRout.Login, dataForm);
     saveToken(data.token);
-    navigate(fromPage, {replace: true});
   },
 );
 

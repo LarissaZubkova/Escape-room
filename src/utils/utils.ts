@@ -84,3 +84,34 @@ export function getFormDateTime(data: string) {
     time: data.slice(-5),
   };
 }
+
+export function validateName(value: string) {
+  if (
+    !value ||
+      !/[А-Яа-яЁёA-Za-z]{1,}/.test(value) ||
+      false
+  ) {
+    return 'Введите нормальное имя';
+  }
+
+  return true;
+}
+
+export function validatePhoneNumber(value: string) {
+  if (
+    !value ||
+      !/[0-9]{10,}/.test(value) ||
+      false
+  ) {
+    return 'Это не номер телефона';
+  }
+
+  return true;
+}
+
+export function validatePeople(value: number, peopleMinMax: number[]) {
+  if (value < peopleMinMax[0] || value > peopleMinMax[1] || !value) {
+    return 'Столько нельзя';
+  }
+  return true;
+}

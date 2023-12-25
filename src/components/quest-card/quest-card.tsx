@@ -1,16 +1,17 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { QuestShortCard } from '../../types/quest';
-import { AppRoute, QuestLevelFilter } from '../../consts';
+import { AppRoute, BookingDay, QuestLevelFilter } from '../../consts';
 import { getMinMaxPeople } from '../../utils/utils';
 import { ReactNode } from 'react';
+import { MyBookingCard } from '../../types/booking';
 
 type QuestCardProps = {
   quest: QuestShortCard;
   children?: ReactNode;
-  count?: number;
+  myQuest?: MyBookingCard;
 }
 
-function QuestCard({quest, children, count}: QuestCardProps): JSX.Element {
+function QuestCard({quest, children, myQuest}: QuestCardProps): JSX.Element {
   const navigate = useNavigate();
   const {title, previewImg, previewImgWebp, id, peopleMinMax, level} = quest;
 
@@ -25,12 +26,13 @@ function QuestCard({quest, children, count}: QuestCardProps): JSX.Element {
       <div className="quest-card__content">
         <div className="quest-card__info-wrapper">
           <Link className="quest-card__link" to={AppRoute.Quest.replace(':id', id)}>{title}</Link>
+          {myQuest && <span className="quest-card__info">{`[${myQuest.date === BookingDay.Today ? 'сегодня' : 'завтра'}, ${myQuest.time}. ${myQuest.location.address}]`}</span>}
         </div>
         <ul className="tags quest-card__tags">
           <li className="tags__item">
             <svg width={11} height={14} aria-hidden="true">
               <use xlinkHref="#icon-person"></use>
-            </svg>{count ? `${count} ` : getMinMaxPeople(peopleMinMax)}чел
+            </svg>{myQuest ? `${myQuest.peopleCount} ` : getMinMaxPeople(peopleMinMax)}чел
           </li>
           <li className="tags__item">
             <svg width={14} height={14} aria-hidden="true">

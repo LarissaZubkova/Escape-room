@@ -1,16 +1,16 @@
-import { Helmet } from 'react-helmet-async';
-import Header from '../../components/header/header';
-import Footer from '../../components/footer/footer';
-import LoadingScreen from '../loading-screen/loading-screen';
-import ErrorScreen from '../error-screen/error-screen';
-import { useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useEffect } from 'react';
-import { fetchBookingPlaceAction } from '../../store/api-actions';
-import { getBookingPlaces, getPlacesLoadingStatus, getPlacesErrorStatus } from '../../store/booking-process/booking-process.selectors';
-import { getQuestCard } from '../../store/quest-process/quest-process.selectors';
-import BookingMap from '../../components/booking-map/booking-map';
+import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
 import BookingForm from '../../components/booking-form/booking-form';
+import BookingMap from '../../components/booking-map/booking-map';
+import Footer from '../../components/footer/footer';
+import Header from '../../components/header/header';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchBookingPlaceAction } from '../../store/api-actions';
+import { getBookingPlaces, getPlacesErrorStatus, getPlacesLoadingStatus } from '../../store/booking-process/booking-process.selectors';
+import { getQuestCard } from '../../store/quest-process/quest-process.selectors';
+import ErrorScreen from '../error-screen/error-screen';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 function BookingScreen(): JSX.Element {
   const {id} = useParams();
@@ -59,7 +59,7 @@ function BookingScreen(): JSX.Element {
           <div className="page-content__item">
             <BookingMap places={bookingPlaces}/>
           </div>
-          <BookingForm id={id}/>
+          <BookingForm id={id} peopleMinMax={quest.peopleMinMax} />
         </div>
       </main>
       <Footer/>
