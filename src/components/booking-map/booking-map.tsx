@@ -9,7 +9,7 @@ import { BookingPlace } from '../../types/booking';
 import useMap from '../../hooks/use-map';
 import iconActive from './pin-active.svg';
 import iconDefault from './pin-default.svg';
-import { changeDuplicateCoords } from '../../utils/utils';
+
 const defaultPin = new Icon({
   iconUrl: iconDefault,
   iconSize: [23, 42],
@@ -30,9 +30,9 @@ function BookingMap({places}: BookingMapProps):JSX.Element {
   const selectedPlace = useAppSelector(getSelectedPlace);
   const dispatch = useAppDispatch();
   const address = {
-    lat: Contacts.LAT,
-    lng: Contacts.LNG,
-    zoom: Contacts.ZOOM,
+    lat: Contacts.Lat,
+    lng: Contacts.Lng,
+    zoom: Contacts.Zoom,
   };
   const {map, mapRef} = useMap(address);
 
@@ -54,21 +54,8 @@ function BookingMap({places}: BookingMapProps):JSX.Element {
           });
       };
 
-      const markers = places.map((place) => createMarker(place));
+      places.forEach((place) => createMarker(place));
 
-      for (const marker of markers) {
-        const sameMarkers = markers.filter((pin) => pin.getLatLng().lat === marker.getLatLng().lat && pin.getLatLng().lng === marker.getLatLng().lng);
-        if (sameMarkers.length > 1) {
-          const index = sameMarkers.indexOf(marker);
-
-          const offset = 32 * (index - (sameMarkers.length - 1) / 2);
-
-          marker.setZIndexOffset(offset);
-        }
-      }
-      markers.forEach((marker) => marker.addTo(markerLayer));
-
-      console.log(markers);
       return () => {
         map.removeLayer(markerLayer);
       };

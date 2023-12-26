@@ -64,7 +64,7 @@ export const QuestLevelFilter = {
   easy: 'Лёгкий',
   medium: 'Средний',
   hard: 'Сложный',
-};
+} as const;
 
 export enum QuestType {
   All = 'all-quests',
@@ -85,21 +85,21 @@ export const QuestTypeFilter = {
 };
 
 export const PasswordLength = {
-  MIN: 3,
-  MAX: 15,
-};
+  Min: 3,
+  Max: 15,
+} as const;
 
 export const Contacts = {
-  CITY: 'Санкт-Петербург',
-  ADDRESS: 'Набережная реки Карповка, д 5П',
-  WORKING_START: '10:00',
-  WORKING_END: '22:00',
-  TELEPHONE: '8 (000) 111-11-11',
-  EMAIL: 'info@escape-room.ru',
-  LAT: 59.968142,
-  LNG: 30.316425,
-  ZOOM: 10,
-};
+  City: 'Санкт-Петербург',
+  Address: 'Набережная реки Карповка, д 5П',
+  WorkingStart: '10:00',
+  WorkingEnd: '22:00',
+  Telephone: '8 (000) 111-11-11',
+  Email: 'info@escape-room.ru',
+  Lat: 59.968142,
+  Lng: 30.316425,
+  Zoom: 10,
+} as const;
 
 export enum BookingDay {
   Today = 'today',

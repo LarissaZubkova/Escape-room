@@ -16,7 +16,7 @@ export function validateEmail(email: string) {
 export function validatePassword(password: string) {
   if (
     !password ||
-      password.length < PasswordLength.MIN || password.length > PasswordLength.MAX ||
+      password.length < PasswordLength.Min || password.length > PasswordLength.Max ||
       !/\d/.test(password) ||
       !/\D/i.test(password) ||
       false

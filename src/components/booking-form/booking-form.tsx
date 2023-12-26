@@ -25,7 +25,9 @@ function BookingForm({id, peopleMinMax}: BookingFormProps): JSX.Element {
   useEffect(() => {
     resetField('date');
 
-    return () => resetField('date');
+    return () => {
+      resetField('date');
+    };
   }, [selectedPlace, resetField]);
 
   const handleFormSubmit: SubmitHandler<FieldValues> = (data) => {

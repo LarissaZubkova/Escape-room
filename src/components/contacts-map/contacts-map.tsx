@@ -11,9 +11,9 @@ const icon = new Icon({
 });
 
 function ContactsMap():JSX.Element {
-  const lat = Contacts.LAT;
-  const lng = Contacts.LNG;
-  const zoom = Contacts.ZOOM;
+  const lat = Contacts.Lat;
+  const lng = Contacts.Lng;
+  const zoom = Contacts.Zoom;
   const {map, mapRef} = useMap({lat, lng, zoom});
 
   useEffect(() => {

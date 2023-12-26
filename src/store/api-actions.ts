@@ -13,7 +13,7 @@ export const fetchQuestByIdAction = createAsyncThunk<QuestFullCard, string, {
   state: State;
   extra: AxiosInstance;
 }>(
-  'fetchQuestCard',
+  'quest/getQuestCard',
   async(id, {extra: api}) => {
     const {data} = await api.get<QuestFullCard>(APIRout.Quest.replace(':id', id));
     return data;
@@ -25,7 +25,7 @@ export const fetchBookingPlaceAction = createAsyncThunk<BookingPlace[], string, 
   state: State;
   extra: AxiosInstance;
 }>(
-  'booking/fetchBookingPlaces',
+  'booking/getBookingPlaces',
   async(id, {extra: api}) => {
     const {data} = await api.get<BookingPlace[]>(APIRout.Booking.replace(':id', id));
     return data;
@@ -37,7 +37,7 @@ export const fetchQuestsAction = createAsyncThunk<QuestShortCard[], undefined, {
   state: State;
   extra: AxiosInstance;
 }>(
-  'fetchQuests',
+  'quest/getQuests',
   async(_arg, {extra: api}) => {
     const {data} = await api.get<QuestShortCard[]>(APIRout.Quests);
     return data;
@@ -49,7 +49,7 @@ export const fetchSendBookingAction = createAsyncThunk<void, {currentData: Booki
   state: State;
   extra: AxiosInstance;
 }>(
-  'booking/fetchSendBooking',
+  'booking/sendBooking',
   async({currentData, id, navigate}, {extra: api}) => {
     await api.post<void>(APIRout.Booking.replace(':id', id), currentData);
     navigate(AppRoute.MyQuests);
@@ -61,7 +61,7 @@ export const fetchMyQuestsAction = createAsyncThunk<MyBookingCard[], undefined, 
   state: State;
   extra: AxiosInstance;
 }>(
-  'booking/fetchMyQuests',
+  'booking/getMyQuests',
   async(_arg, {extra: api}) => {
     const {data} = await api.get<MyBookingCard[]>(APIRout.MyQuests);
     return data;
@@ -73,7 +73,7 @@ export const fetchDeleteMyQuestAction = createAsyncThunk<void, string, {
   state: State;
   extra: AxiosInstance;
 }>(
-  'booking/fetchDeleteMyQuest',
+  'booking/deleteMyQuest',
   async(id, {dispatch, extra: api}) => {
     await api.delete<void>(`${APIRout.MyQuests}/${id}`);
     dispatch(fetchMyQuestsAction());

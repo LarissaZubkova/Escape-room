@@ -20,7 +20,7 @@ function ContactsScreen(): JSX.Element {
         </div>
         <div className="container">
           <div className="page-content__title-wrapper page-content__title-wrapper--underlined">
-            <p className="subtitle page-content__subtitle">квесты в&nbsp;{`${Contacts.CITY}е`}</p>
+            <p className="subtitle page-content__subtitle">квесты в&nbsp;{`${Contacts.City}е`}</p>
             <h1 className="title title--size-m page-content__title">Контакты</h1>
           </div>
           <div className="contacts">
@@ -28,23 +28,23 @@ function ContactsScreen(): JSX.Element {
               <div className="contacts__item">
                 <dt className="contacts__dt">Адрес</dt>
                 <dd className="contacts__dd">
-                  <address className="contacts__address">{Contacts.CITY},<br/> {Contacts.ADDRESS}</address>
+                  <address className="contacts__address">{Contacts.City},<br/> {Contacts.Address}</address>
                 </dd>
               </div>
               <div className="contacts__item">
                 <dt className="contacts__dt">Режим работы</dt>
-                <dd className="contacts__dd">Ежедневно, с&nbsp;{Contacts.WORKING_START} до&nbsp;{Contacts.WORKING_END}</dd>
+                <dd className="contacts__dd">Ежедневно, с&nbsp;{Contacts.WorkingStart} до&nbsp;{Contacts.WorkingEnd}</dd>
               </div>
               <div className="contacts__item">
                 <dt className="contacts__dt">Телефон</dt>
                 <dd className="contacts__dd">
-                  <a className="link" href="tel:88003335599">{Contacts.TELEPHONE}</a>
+                  <a className="link" href="tel:88003335599">{Contacts.Telephone}</a>
                 </dd>
               </div>
               <div className="contacts__item">
                 <dt className="contacts__dt">E&ndash;mail</dt>
                 <dd className="contacts__dd">
-                  <a className="link" href="mailto:info@escape-room.ru">{Contacts.EMAIL}</a>
+                  <a className="link" href="mailto:info@escape-room.ru">{Contacts.Email}</a>
                 </dd>
               </div>
             </dl>

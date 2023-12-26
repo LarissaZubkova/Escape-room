@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { memo } from 'react';
 import { AppRoute, AuthorizationStatus } from '../../consts';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-actions';
@@ -10,7 +11,7 @@ type HeaderProps = {
   isLogin?: boolean;
 }
 
-function Header({isMain, isLogin}: HeaderProps): JSX.Element {
+function AppHeader({isMain, isLogin}: HeaderProps): JSX.Element {
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
@@ -48,5 +49,7 @@ function Header({isMain, isLogin}: HeaderProps): JSX.Element {
     </header>
   );
 }
+
+const Header = memo(AppHeader);
 
 export default Header;
