@@ -1,6 +1,6 @@
-import { NavTab, AppRoute, NavParams } from '../../consts';
 import classNames from 'classnames';
 import { Link, useLocation } from 'react-router-dom';
+import { AppRoute, NavParams, NavTab } from '../../consts';
 
 type HeaderNavProps = {
   isAuth: boolean;

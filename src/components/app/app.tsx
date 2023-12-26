@@ -1,21 +1,21 @@
+import { useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Route, Routes } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AppRoute } from '../../consts';
-import { getAuthCheckedStatus, getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
-import { useEffect } from 'react';
-import WelcomeScreen from '../../pages/welcome-screen/welcome-screen';
-import LoginScreen from '../../pages/login-screen/login-screen';
-import BookingScreen from '../../pages/booking-screen/booking-screen';
-import ContactsScreen from '../../pages/contacts-screen/contacts-screen';
-import MyQuestsScreen from '../../pages/my-quests-screen/my-quests-screen';
-import QuestScreen from '../../pages/quest-screen/quest-screen';
-import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
-import PrivateRoute from '../private-route/private-route';
-import LoadingScreen from '../../pages/loading-screen/loading-screen';
-import ErrorScreen from '../../pages/error-screen/error-screen';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { checkAuthAction, fetchQuestsAction } from '../../store/api-actions';
 import { getQuestsErrorStatus, getQuestsLoadingStatus } from '../../store/quests-process/quest-process.selectors';
+import { getAuthCheckedStatus, getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
+import BookingScreen from '../../pages/booking-screen/booking-screen';
+import ContactsScreen from '../../pages/contacts-screen/contacts-screen';
+import ErrorScreen from '../../pages/error-screen/error-screen';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
+import LoginScreen from '../../pages/login-screen/login-screen';
+import MyQuestsScreen from '../../pages/my-quests-screen/my-quests-screen';
+import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
+import QuestScreen from '../../pages/quest-screen/quest-screen';
+import WelcomeScreen from '../../pages/welcome-screen/welcome-screen';
+import PrivateRoute from '../private-route/private-route';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -27,6 +27,11 @@ function App(): JSX.Element {
   useEffect(() => {
     dispatch(fetchQuestsAction());
     dispatch(checkAuthAction());
+
+    return () => {
+      dispatch(fetchQuestsAction());
+      dispatch(checkAuthAction());
+    };
   }, [dispatch]);
 
   if (!isAuthChecked || isQuestsLoading) {

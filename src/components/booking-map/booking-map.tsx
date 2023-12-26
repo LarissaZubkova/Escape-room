@@ -1,5 +1,5 @@
-import { Icon, Marker, layerGroup } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { Icon, Marker, layerGroup } from 'leaflet';
 import { useEffect } from 'react';
 import { Contacts } from '../../consts';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -9,7 +9,7 @@ import { BookingPlace } from '../../types/booking';
 import useMap from '../../hooks/use-map';
 import iconActive from './pin-active.svg';
 import iconDefault from './pin-default.svg';
-
+import { changeDuplicateCoords } from '../../utils/utils';
 const defaultPin = new Icon({
   iconUrl: iconDefault,
   iconSize: [23, 42],
@@ -29,7 +29,6 @@ type BookingMapProps = {
 function BookingMap({places}: BookingMapProps):JSX.Element {
   const selectedPlace = useAppSelector(getSelectedPlace);
   const dispatch = useAppDispatch();
-
   const address = {
     lat: Contacts.LAT,
     lng: Contacts.LNG,
@@ -43,11 +42,9 @@ function BookingMap({places}: BookingMapProps):JSX.Element {
 
       const createMarker = (point: BookingPlace) => {
         const [lat, lng] = point.location.coords;
-        const marker = new Marker({
-          lat,
-          lng
-        });
-        marker
+        const marker = new Marker({lat, lng});
+
+        return marker
           .setIcon(selectedPlace && selectedPlace.id === point.id ? activePin : defaultPin)
           .addTo(markerLayer)
           .on('click', () => {
@@ -57,10 +54,21 @@ function BookingMap({places}: BookingMapProps):JSX.Element {
           });
       };
 
-      places.forEach((place) => {
-        createMarker(place);
-      });
+      const markers = places.map((place) => createMarker(place));
 
+      for (const marker of markers) {
+        const sameMarkers = markers.filter((pin) => pin.getLatLng().lat === marker.getLatLng().lat && pin.getLatLng().lng === marker.getLatLng().lng);
+        if (sameMarkers.length > 1) {
+          const index = sameMarkers.indexOf(marker);
+
+          const offset = 32 * (index - (sameMarkers.length - 1) / 2);
+
+          marker.setZIndexOffset(offset);
+        }
+      }
+      markers.forEach((marker) => marker.addTo(markerLayer));
+
+      console.log(markers);
       return () => {
         map.removeLayer(markerLayer);
       };

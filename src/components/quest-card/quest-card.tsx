@@ -1,9 +1,9 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { QuestShortCard } from '../../types/quest';
-import { AppRoute, BookingDay, QuestLevelFilter } from '../../consts';
-import { getMinMaxPeople } from '../../utils/utils';
 import { ReactNode } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AppRoute, BookingDay, QuestLevelFilter, DayQuestCard } from '../../consts';
 import { MyBookingCard } from '../../types/booking';
+import { QuestShortCard } from '../../types/quest';
+import { getCorrectAddress, getMinMaxPeople } from '../../utils/utils';
 
 type QuestCardProps = {
   quest: QuestShortCard;
@@ -26,7 +26,14 @@ function QuestCard({quest, children, myQuest}: QuestCardProps): JSX.Element {
       <div className="quest-card__content">
         <div className="quest-card__info-wrapper">
           <Link className="quest-card__link" to={AppRoute.Quest.replace(':id', id)}>{title}</Link>
-          {myQuest && <span className="quest-card__info">{`[${myQuest.date === BookingDay.Today ? 'сегодня' : 'завтра'}, ${myQuest.time}. ${myQuest.location.address}]`}</span>}
+          {myQuest &&
+          <span className="quest-card__info">
+            {`[${myQuest.date === BookingDay.Today ?
+              DayQuestCard.Today :
+              DayQuestCard.Tomorrow}, ${myQuest.time}. ${getCorrectAddress(myQuest.location.address).start}`}
+            <br/>
+            {`${getCorrectAddress(myQuest.location.address).end}]`}
+          </span>}
         </div>
         <ul className="tags quest-card__tags">
           <li className="tags__item">

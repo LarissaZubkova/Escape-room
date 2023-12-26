@@ -1,7 +1,6 @@
-
 import { QuestLevel, QuestLevelFilter, QuestType, QuestTypeFilter } from '../../consts';
-import { getIconWidth } from '../../utils/utils';
 import { FiltersState } from '../../types/quest';
+import { getIconWidth } from '../../utils/utils';
 
 type FiltersFormProps = {
   selectedFilters: FiltersState;

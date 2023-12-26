@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchMyQuestsAction } from '../../store/api-actions';
 import { getMyQuestsCard, getMyQuestsCardErrorStatus, getMyQuestsCardLoadingStatus } from '../../store/my-quests-process/my-quest-process.selectors';
-import CancelButton from '../../components/cancelButton/cancelButton';
+import CancelButton from '../../components/cancel-button/cancel-button';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import QuestCard from '../../components/quest-card/quest-card';
@@ -18,6 +18,10 @@ function MyQuestsScreen(): JSX.Element {
 
   useEffect(() => {
     dispatch(fetchMyQuestsAction());
+
+    return () => {
+      dispatch(fetchMyQuestsAction());
+    };
   },[dispatch]);
 
   if (isLoading) {

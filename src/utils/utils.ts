@@ -1,4 +1,4 @@
-import { PasswordLength, AGREEMENT, QuestType, QuestLevel } from '../consts';
+import { PasswordLength, QuestType, QuestLevel } from '../consts';
 import { QuestShortCard } from '../types/quest';
 
 export function validateEmail(email: string) {
@@ -7,7 +7,7 @@ export function validateEmail(email: string) {
       !/^[^ ]+@[^ ]+\.[a-z]{2,3}$/.test(email) ||
       false
   ) {
-    return false;
+    return 'Введите корректный емайл';
   }
 
   return true;
@@ -21,14 +21,10 @@ export function validatePassword(password: string) {
       !/\D/i.test(password) ||
       false
   ) {
-    return false;
+    return 'Пароль должен быть от 3 до 15 символов и содержать минимум 1 цифру и 1 букву';
   }
 
   return true;
-}
-
-export function validateAgreement(agreement: string) {
-  return agreement === AGREEMENT;
 }
 
 export function getMinMaxPeople(people: number[]) {
@@ -88,10 +84,10 @@ export function getFormDateTime(data: string) {
 export function validateName(value: string) {
   if (
     !value ||
-      !/[А-Яа-яЁёA-Za-z]{1,}/.test(value) ||
-      false
+      !/[А-Яа-яЁёA-Za-z]{1,15}/.test(value) ||
+      false || value.length > 15
   ) {
-    return 'Введите нормальное имя';
+    return 'Имя не должно первышыть 15 символов и состоять из букв';
   }
 
   return true;
@@ -100,11 +96,20 @@ export function validateName(value: string) {
 export function validatePhoneNumber(value: string): string | boolean {
   if (
     !value ||
-      !/[0-9]{10,}/.test(value) ||
+      !/^((\+7))(\(\d{3}\))(\d{3}-)(\d{2}-)(\d{2})$/.test(value) ||
       false
   ) {
-    return 'Это не номер телефона';
+    return 'номер формата +7(000)000-00-00';
   }
 
   return true;
+}
+
+export function getCorrectAddress(address: string) {
+  const index = address.indexOf('м.');
+
+  return {
+    start: address.slice(0, index),
+    end: address.slice(index),
+  };
 }

@@ -1,14 +1,17 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../consts';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
-import { getAuthorizationStatus, getErrorStatus, getLoadingStatus } from '../../store/user-process/user-process.selectors';
+import { getAuthorizationStatus, getLoadingStatus, getErrorStatus } from '../../store/user-process/user-process.selectors';
 import { AuthData } from '../../types/auth-data';
-import { validateAgreement, validateEmail, validatePassword } from '../../utils/utils';
+import { validateEmail, validatePassword } from '../../utils/utils';
+import { useForm, FieldValues, SubmitHandler } from 'react-hook-form';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
+import FormErrorMessage from '../../components/form-error-message/form-error-message';
+import ErrorScreen from '../error-screen/error-screen';
 
 type Location = {
   state: {
@@ -21,16 +24,12 @@ type Location = {
 function LoginScreen(): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const hasError = useAppSelector(getErrorStatus);
   const isLoading = useAppSelector(getLoadingStatus);
+  const hasError = useAppSelector(getErrorStatus);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const {register, handleSubmit, formState: {errors, isValid}} = useForm({mode: 'onChange'});
   const location = useLocation() as Location;
   const fromPage = location.state?.from.pathname || AppRoute.Main;
-  const [isValid, setIsValid] = useState({
-    password: true,
-    email: true,
-    agreement: true,
-  });
 
   useEffect (() => {
     if (authorizationStatus === AuthorizationStatus.Auth){
@@ -38,25 +37,10 @@ function LoginScreen(): JSX.Element {
     }
   }, [authorizationStatus, navigate, fromPage]);
 
-  const handleFormChange = (evt: ChangeEvent<HTMLInputElement>, valid: boolean) => {
-    const {name} = evt.target;
+  const handleFormSubmit: SubmitHandler<FieldValues> = (data) => {
+    const {email, password} = data as AuthData;
 
-    setIsValid({
-      ...isValid,
-      [name]: valid,
-    });
-  };
-
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    const form = evt.currentTarget;
-    const formData = new FormData(form);
-    const {email, password} = Object.fromEntries(formData) as AuthData;
-    const dataForm = {email, password} as AuthData;
-
-    if (isValid.password && isValid.email && isValid.agreement) {
-      dispatch(loginAction(dataForm));
-    }
+    dispatch(loginAction({email, password}));
   };
 
   return (
@@ -77,7 +61,9 @@ function LoginScreen(): JSX.Element {
             <form className="login-form"
               action="https://echo.htmlacademy.ru/"
               method="post"
-              onSubmit={handleSubmit}
+              onSubmit={(evt) => {
+                handleSubmit(handleFormSubmit)(evt);
+              }}
             >
               <div className="login-form__inner-wrapper">
                 <h1 className="title title--size-s login-form__title">Вход</h1>
@@ -87,57 +73,55 @@ function LoginScreen(): JSX.Element {
                     <input
                       type="email"
                       id="email"
-                      name="email"
+                      disabled={isLoading}
                       placeholder="Адрес электронной почты"
-                      required
-                      onChange={(evt) => {
-                        const valid = validateEmail(evt.target.value);
-                        handleFormChange(evt, valid);
-                      }}
+                      {...register('email',
+                        { required: 'Обязательное поле' ,
+                          validate: validateEmail,
+                        }
+                      )}
                     />
+                    {errors.email && <FormErrorMessage error={errors.email}/>}
                   </div>
                   <div className="custom-input login-form__input">
                     <label className="custom-input__label" htmlFor="password">Пароль</label>
                     <input
                       type="password"
                       id="password"
-                      name="password"
                       placeholder="Пароль"
-                      required
-                      minLength={3}
-                      maxLength={15}
-                      onChange={(evt) => {
-                        const valid = validatePassword(evt.target.value);
-                        handleFormChange(evt, valid);
-                      }}
+                      disabled={isLoading}
+                      {...register('password',
+                        { required: 'Обязательное поле' ,
+                          validate: validatePassword,
+                        }
+                      )}
                     />
-                    {!isValid.password && <p>Пароль должен состоять из цифр и букв</p>}
-                    {hasError && <p>Что-то пощло не так, попробуйте еще раз</p>}
+                    {errors.password && <FormErrorMessage error={errors.password}/>}
                   </div>
                 </div>
                 <button
                   className="btn btn--accent btn--general login-form__submit"
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isLoading || !isValid}
                 >Войти
                 </button>
               </div>
+              {hasError && <ErrorScreen />}
               <label className="custom-checkbox login-form__checkbox">
                 <input
                   type="checkbox"
                   id="id-order-agreement"
-                  name="agreement"
-                  required
-                  onChange={(evt) => {
-                    const valid = validateAgreement(evt.target.value);
-                    handleFormChange(evt, valid);
-                  }}
+                  disabled={isLoading}
+                  {...register('agreement',
+                    {required: 'Обязательное поле'}
+                  )}
                 />
                 <span className="custom-checkbox__icon">
                   <svg width={20} height={17} aria-hidden="true">
                     <use xlinkHref="#icon-tick"></use>
                   </svg>
                 </span>
+                {errors.agreement && <FormErrorMessage error={errors.agreement}/>}
                 <span className="custom-checkbox__label">Я&nbsp;согласен с
                   <a className="link link--active-silver link--underlined" href="#">правилами обработки персональных данных</a>&nbsp;и пользовательским соглашением
                 </span>

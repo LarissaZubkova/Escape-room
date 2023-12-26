@@ -1,8 +1,8 @@
 import 'leaflet/dist/leaflet.css';
 import { Icon, Marker } from 'leaflet';
 import { useEffect } from 'react';
-import useMap from '../../hooks/use-map';
 import { Contacts, MarkersUrl } from '../../consts';
+import useMap from '../../hooks/use-map';
 
 const icon = new Icon({
   iconUrl: MarkersUrl.URL_MARKER_DEFAULT,
@@ -18,10 +18,8 @@ function ContactsMap():JSX.Element {
 
   useEffect(() => {
     if (map) {
-      const marker = new Marker({
-        lat,
-        lng
-      });
+      const marker = new Marker({lat, lng});
+
       marker.setIcon(icon).addTo(map);
 
       return () => {

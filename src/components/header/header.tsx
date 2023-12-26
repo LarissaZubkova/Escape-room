@@ -1,8 +1,8 @@
+import { Link } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../consts';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
-import { Link } from 'react-router-dom';
 import { logoutAction } from '../../store/api-actions';
+import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
 import HeaderNav from '../header-nav/header-nav';
 
 type HeaderProps = {

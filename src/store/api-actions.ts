@@ -1,13 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
+import { NavigateFunction } from 'react-router-dom';
 import { APIRout, AppRoute } from '../consts';
 import { dropToken, saveToken } from '../services/token';
 import { AuthData, UserData } from '../types/auth-data';
-import { AppDispatch, State } from '../types/state';
-import { NavigateFunction } from 'react-router-dom';
-import { QuestShortCard, QuestFullCard } from '../types/quest';
 import { BookingData, BookingPlace, MyBookingCard } from '../types/booking';
-//import { redirectToRoute } from './action';
+import { QuestFullCard, QuestShortCard } from '../types/quest';
+import { AppDispatch, State } from '../types/state';
 
 export const fetchQuestByIdAction = createAsyncThunk<QuestFullCard, string, {
   dispatch: AppDispatch;

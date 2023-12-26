@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-import BookingForm from '../../components/booking-form/booking-form';
-import BookingMap from '../../components/booking-map/booking-map';
-import Footer from '../../components/footer/footer';
-import Header from '../../components/header/header';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchBookingPlaceAction } from '../../store/api-actions';
 import { getBookingPlaces, getPlacesErrorStatus, getPlacesLoadingStatus } from '../../store/booking-process/booking-process.selectors';
 import { getQuestCard } from '../../store/quest-process/quest-process.selectors';
+import BookingForm from '../../components/booking-form/booking-form';
+import BookingMap from '../../components/booking-map/booking-map';
+import Footer from '../../components/footer/footer';
+import Header from '../../components/header/header';
 import ErrorScreen from '../error-screen/error-screen';
 import LoadingScreen from '../loading-screen/loading-screen';
 
@@ -23,7 +23,6 @@ function BookingScreen(): JSX.Element {
   useEffect(() => {
     if (id) {
       dispatch(fetchBookingPlaceAction(id));
-
     }
   }, [id, dispatch]);
 

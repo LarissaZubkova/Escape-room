@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../consts';
 import { MyQuestsProcess } from '../../types/state';
-import { fetchMyQuestsAction, fetchDeleteMyQuestAction } from '../api-actions';
+import { fetchDeleteMyQuestAction, fetchMyQuestsAction } from '../api-actions';
 
 const initialState: MyQuestsProcess = {
   myQuests: [],

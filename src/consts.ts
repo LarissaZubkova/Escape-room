@@ -1,7 +1,6 @@
 export const AUTH_TOKEN_KEY_NAME = 'my-token';
 export const BACKEND_URL = 'https://grading.design.pages.academy/v1/escape-room/';
 export const REQUEST_TIMEOUT = 5000;
-export const AGREEMENT = 'on';
 export const MarkersUrl = {
   URL_MARKER_DEFAULT: 'img/svg/pin-default.svg',
   URL_MARKER_ACTIVE: 'img/svg/pin-active.svg',
@@ -105,4 +104,9 @@ export const Contacts = {
 export enum BookingDay {
   Today = 'today',
   Tomorrow = 'tomorrow',
+}
+
+export enum DayQuestCard {
+  Today = 'сегодня',
+  Tomorrow = 'завтра',
 }
