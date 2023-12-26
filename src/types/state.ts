@@ -29,6 +29,8 @@ export type BookingProcess = {
   isPlacesLoading: boolean;
   hasPlacesError: boolean;
   selectedPlace: BookingPlace | null;
+  isSending: boolean;
+  hasSendingError: boolean;
 }
 
 export type MyQuestsProcess = {

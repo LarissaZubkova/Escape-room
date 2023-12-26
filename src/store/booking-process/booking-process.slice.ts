@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NameSpace } from '../../consts';
 import { BookingProcess } from '../../types/state';
-import { fetchBookingPlaceAction } from '../api-actions';
+import { fetchBookingPlaceAction, fetchSendBookingAction } from '../api-actions';
 import { BookingPlace } from '../../types/booking';
 
 const initialState: BookingProcess = {
@@ -9,6 +9,8 @@ const initialState: BookingProcess = {
   isPlacesLoading: false,
   hasPlacesError: false,
   selectedPlace: null,
+  isSending: false,
+  hasSendingError: false,
 };
 
 export const bookingProcess = createSlice({
@@ -34,6 +36,18 @@ export const bookingProcess = createSlice({
       .addCase(fetchBookingPlaceAction.rejected, (state) => {
         state.hasPlacesError = true;
         state.isPlacesLoading = false;
+      })
+      .addCase(fetchSendBookingAction.pending, (state) => {
+        state.isSending = true;
+        state.hasSendingError = false;
+      })
+      .addCase(fetchSendBookingAction.fulfilled, (state) => {
+        state.isSending = false;
+        state.hasSendingError = false;
+      })
+      .addCase(fetchSendBookingAction.rejected, (state) => {
+        state.hasSendingError = true;
+        state.isSending = false;
       });
   }
 });

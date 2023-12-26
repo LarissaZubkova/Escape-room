@@ -1,11 +1,12 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getSelectedPlace } from '../../store/booking-process/booking-process.selectors';
+import { getSelectedPlace, getSendingStatus } from '../../store/booking-process/booking-process.selectors';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import { getFormDateTime, validateName, validatePhoneNumber } from '../../utils/utils';
 import { BookingData, CurrentFormData } from '../../types/booking';
 import { fetchSendBookingAction, fetchMyQuestsAction } from '../../store/api-actions';
 import { useNavigate } from 'react-router-dom';
 import FormErrorMessage from '../form-error-message/form-error-message';
+import ErrorScreen from '../../pages/error-screen/error-screen';
 
 type BookingFormProps = {
   id: string;
@@ -14,13 +15,14 @@ type BookingFormProps = {
 
 function BookingForm({id, peopleMinMax}: BookingFormProps): JSX.Element {
   const selectedPlace = useAppSelector(getSelectedPlace);
+  const isSending = useAppSelector(getSendingStatus);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: {errors} } = useForm({mode: 'onChange'});
+  const {register, handleSubmit, formState: {errors, isSubmitting, isSubmitSuccessful}} = useForm({mode: 'onChange'});
 
   const handleFormSubmit: SubmitHandler<FieldValues> = (data) => {
     const {children, date, contactPerson, person, phone} = data as CurrentFormData;
-
+    console.log(isSubmitSuccessful, isSubmitting);
     const currentData = {
       date: getFormDateTime(date).date,
       time: getFormDateTime(date).time,
@@ -94,9 +96,7 @@ function BookingForm({id, peopleMinMax}: BookingFormProps): JSX.Element {
             placeholder="Имя"
             {...register('contactPerson',
               { required: 'Обязательное поле' ,
-                validate: {
-                  validateName,
-                },
+                validate: validateName,
               }
             )}
           />
@@ -149,15 +149,20 @@ function BookingForm({id, peopleMinMax}: BookingFormProps): JSX.Element {
           <span className="custom-checkbox__label">Со&nbsp;мной будут дети</span>
         </label>
       </fieldset>
-      <button className="btn btn--accent btn--cta booking-form__submit" type="submit">Забронировать</button>
+      <button
+        className="btn btn--accent btn--cta booking-form__submit"
+        type="submit"
+        disabled={isSubmitting}
+      >Забронировать
+      </button>
+      {isSubmitSuccessful && <ErrorScreen />}
       <label className="custom-checkbox booking-form__checkbox booking-form__checkbox--agreement">
         <input
           type="checkbox"
           id="id-order-agreement"
-          {...register('agreement',
-            { required: 'Обязательное поле' })}
+          name="agreement"
+          required
         />
-        {errors.agreement && <FormErrorMessage error={errors.agreement}/>}
         <span className="custom-checkbox__icon">
           <svg width={20} height={17} aria-hidden="true">
             <use xlinkHref="#icon-tick"></use>

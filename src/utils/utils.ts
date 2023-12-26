@@ -97,7 +97,7 @@ export function validateName(value: string) {
   return true;
 }
 
-export function validatePhoneNumber(value: string) {
+export function validatePhoneNumber(value: string): string | boolean {
   if (
     !value ||
       !/[0-9]{10,}/.test(value) ||
@@ -106,12 +106,5 @@ export function validatePhoneNumber(value: string) {
     return 'Это не номер телефона';
   }
 
-  return true;
-}
-
-export function validatePeople(value: number, peopleMinMax: number[]) {
-  if (value < peopleMinMax[0] || value > peopleMinMax[1] || !value) {
-    return 'Столько нельзя';
-  }
   return true;
 }
